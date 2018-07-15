@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <!-- 表示处于开发模式 -->
+    <constant name="struts.devMode" value="true" />
+
+    <!-- 在 URL 地址中动态指定（动态方法调用DMI） -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+
+    <!-- 解决中文乱码问题 -->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+
+    <package name="login" namespace="/" extends="struts-default">
+
+        <!-- 应该把struts中的action中的class应该为spring中bean的ID，而不是全类名 -->
+        <!-- 否则service注入失败 -->
+        <action name="login" class="loginAction" method="login">
+            <result name="success" type="redirect">emp-list</result>
+            <result name="error">/login.jsp</result>
+        </action>
+
+        <!-- 应该把struts中的action中的class应该为spring中bean的ID，而不是全类名 -->
+        <!-- 否则service注入失败 -->
+        <action name="emp-*" class="employeeAction" method="{1}">
+            <result name="list">/index.jsp</result>
+            <result name="input" >/emp-add.jsp</result>
+            <result name="success" type="redirect">emp-list</result>
+            <result name="delete" type="redirect">emp-list</result>
+            <result name="update" >/emp-add.jsp</result>
+            <result name="ajax-success" type="stream">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+
+    </package>
+
+</struts>
